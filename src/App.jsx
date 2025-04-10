@@ -4,10 +4,11 @@ import memphis from './assets/memphis.svg'
 import iconGit from '../public/iconGitHub.svg'
 import logoGit from '../public/logoGitHub.svg'
 import iconSearch from './assets/iconSearch.svg'
+import ErrorMessage from './components/ErrorMessage'
 
 
 function App() {
-
+  const message = 'Nenhum perfil foi encontrado com ese nome de usuário.Tente novamente'
   return (
     <>
       <div className='relative w-full h-screen overflow-hidden flex justify-center items-center'>
@@ -33,6 +34,10 @@ function App() {
                 <img src={iconSearch} alt="Buscar" className="w-6 h-6"/>
               </button>
             </div>
+          </div>
+
+          <div className='flex justify-center'>
+            <ErrorMessage message={message}/>
           </div>
         </div>
       </div>
