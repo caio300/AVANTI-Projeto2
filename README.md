@@ -1,4 +1,4 @@
-# 🔍 GitHub Finder
+# 🔍 AVANTI-Projeto2
 
 Aplicação desenvolvida em React + TypeScript para buscar perfis de usuários do GitHub. Basta digitar o nome de usuário e visualizar as informações do perfil.
 
