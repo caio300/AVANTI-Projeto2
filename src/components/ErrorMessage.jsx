@@ -1,10 +1,6 @@
 import React from "react";
 
-interface ErrorMessageProps {
-  message: string;
-}
-
-const ErrorMessage: React.FC<ErrorMessageProps> = ({ message }) => {
+const ErrorMessage = ({ message }) => {
   const [firstLine, secondLine] = message.split(".");
 
   return (

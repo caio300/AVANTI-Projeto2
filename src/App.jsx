@@ -1,14 +1,52 @@
+import { useState } from "react";
+import SearchBar from './components/SearchBar'
+import Header from './components/Header'
+import ResultSection from './components/ResultSection'
 import ellipse1 from './assets/ellipse1.svg'
 import ellipse2 from './assets/ellipse2.svg'
 import memphis from './assets/memphis.svg'
-import iconGit from '../public/iconGitHub.svg'
-import logoGit from '../public/logoGitHub.svg'
-import iconSearch from './assets/iconSearch.svg'
-import ErrorMessage from './components/ErrorMessage'
+
 
 
 function App() {
-  const message = 'Nenhum perfil foi encontrado com ese nome de usuário.Tente novamente'
+  const [inputValue, setInputValue] = useState("");
+  const [userData, setUserData] = useState(null);
+  const [error, setError] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handleClick = () => {
+    setUserData(inputValue); 
+    console.log("Usuário pesquisado:", inputValue);
+    handleSearch();
+  };
+
+  const handleSearch = async () => {
+    if (!inputValue.trim()) setInputValue("");
+
+    try {
+      setError("");
+      setUserData(null);
+      setIsLoading(true);
+
+      const response = await fetch(`https://api.github.com/users/${inputValue}`);
+
+      if (!response.ok) {
+        throw new Error("Nenhum perfil foi encontrado com ese nome de usuário.Tente novamente");
+      }
+
+      const data = await response.json();
+      const { name:name, bio:description, avatar_url:image } = data
+      setUserData({name, description, image});
+      setInputValue("");
+      console.log(`{name, description, image}: ${name, description, image}`)
+    } catch (err) {
+      setError(err.message);
+      setInputValue("")
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <>
       <div className='relative w-full h-screen overflow-hidden flex justify-center items-center'>
@@ -16,29 +54,10 @@ function App() {
         <img src={memphis} alt="Efeito visual"  className="absolute top-24 left-96 translate-x-[-50%] w-[239px] h-[225px] pointer-events-none select-none"/>
         <img src={ellipse2} alt="Efeito visual"  className="absolute top-0 right-0 w-[674px] pointer-events-none select-none"/>
 
-        <div className="relative z-10 bg-black h-[537px] w-[1156px]">
-          <div className='flex justify-center gap-3 mt-10'>
-            <img src={iconGit} alt="Icons Git Hub" />
-            <h1 className="text-6xl text-center text-white font-semibold font-nunito">Perfil</h1>
-            <img src={logoGit} alt="Icons Git Hub" />
-          </div>
-          
-          <div className='flex justify-center mt-7'>
-            <div className='relative flex justify-center w-[503px] h-[62px] rounded-lg overflow-hidden'>
-              <input
-                type="text"
-                placeholder="Digite um usuário do Github"
-                className="flex-1 px-4 bg-white outline-none max-w-[503px] rounded-lg font-semibold text-black text-xl placeholder:text-black placeholder:text-xl"
-              />
-              <button className="absolute right-0 bg-blue-600 hover:bg-blue-700 w-[62px] h-[62px] flex items-center justify-center rounded-lg">
-                <img src={iconSearch} alt="Buscar" className="w-6 h-6"/>
-              </button>
-            </div>
-          </div>
-
-          <div className='flex justify-center'>
-            <ErrorMessage message={message}/>
-          </div>
+        <div className="z-10 bg-black min-h-[537px] w-[1156px]">
+          <Header />
+          <SearchBar inputValue={inputValue} setInputValue={setInputValue} onClick={handleClick} />
+          <ResultSection userData={userData} error={error} isLoading={isLoading}/>
         </div>
       </div>
     </>
