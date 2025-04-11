@@ -25,11 +25,11 @@ Aplicação desenvolvida em React + TypeScript para buscar perfis de usuários d
 
 1. ** Clone o repositório**
 	```bash
-	git clone https://github.com/seu-usuario/github-finder.git
+	git clone https://github.com/caio300/AVANTI-Projeto2
 
 1. ** Acesse a pasta**
 	```bash
-	cd github-finder
+	cd AVANTI-Projeto2
 
 1. ** Rode o projeto**
 	```bash
